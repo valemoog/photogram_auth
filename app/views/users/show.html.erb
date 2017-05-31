@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h3>User #<%= @user.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <dl class="dl-horizontal">
+      <dt>Username</dt>
+      <dd><%= @user.username%></dd>
+
+
+      <dt>Photos</dt>
+      <dd>
+        <ul class="list-group">
+        <% @user.photos.each do |photo| %>
+          <li class="list-group-item">
+            <a>
+              <%= photo.caption %>
+              <dd><img src="<%= photo.image %>" width="100"></dd>
+            </a>
+          </li>
+        <% end %>
+        </ul>
+      </dd>
+
+    </dl>
+
+  </div>
+</div>
