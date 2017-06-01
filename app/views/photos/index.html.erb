@@ -2,9 +2,9 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
 
-      <a href="/photos/new" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
-    </div>
+    <a href="/photos/new" class="btn btn-default btn-block"><i class="fa fa-plus"></i></a>
   </div>
+</div>
 
 
 
@@ -20,6 +20,79 @@
       <div class="panel-heading"> <%= photo.user.username %> <small>   <%= time_ago_in_words (photo.created_at) %> ago</small></div>
       <div class="panel-body">
         <img src="<%= photo.image %>" class ="img-responsive"></td>
+
+
+        <% if current_user.liked_photos.ids.include? photo.id %>
+
+        <a href="/delete_like/<%= photo.likes.find_by(:user_id => current_user.id).id %>"><i class="fa fa-heart"></i></a>
+
+        <% else %>
+
+
+        <p>
+
+
+          <form action="/create_like" method="post">
+
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>>">
+
+            <input type="hidden" name="photo_id" value="<%= photo.id %>">
+
+            <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+            <button class="btn btn-link">
+              <i class="fa fa-heart-o"></i>
+            </button>
+
+            <small class="text-muted">be the first to like this</small>
+          </form>
+        </p>
+
+        <% end %>
+
+
+
+
+
+        <% photo.comments.each do |comment|%>
+
+        <ul class="media-list">
+          <li class="media">
+            <div class="media-body">
+              <h6 class="media-heading">
+                <a href="/users/<%= comment.user_id %>"><%= comment.user.username%></a>
+                <small>
+                  <%= time_ago_in_words (comment.created_at)%> ago
+                </small>
+              </h6>
+              <%= comment.body%>
+            </div>
+          </li>
+        </ul>
+
+        <% end %>
+
+
+        <form action="/create_comment" method="post">
+
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>>">
+
+          <input type="text" name="body" placeholder="Add a comment...">
+
+          <input type="hidden" name="photo_id" value="<%= photo.id %>">
+
+          <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+          <button class="btn btn-link">
+            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+          </button>
+        </form>
+
+
+
+
+
+
 
 
 
